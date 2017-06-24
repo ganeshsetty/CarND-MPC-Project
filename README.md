@@ -1,3 +1,42 @@
+
+# Objective
+
+This project is about implementing a Model Predictive Controller (MPC) to drive the car around a track in simulator.
+The video link shows the car behaviour with MPC implementation https://youtu.be/yPwjIMOOvl8. The video shows at start some kind of instability. This is caused due to recording ,but without recording this behaviour is not observed.It is almost smooth start.
+
+# Model
+
+A simple vehicle model called global kinematic model is adopted for designing MPC.This model is simplification of dynamic model by ignoring gravity, tire forces etc.
+
+[x,y,ψ,v] is the state of the vehicle
+
+x,y - position of vehicle
+
+ψ   - orientation in radians
+
+v   - speed of vehicle
+
+[cte,eψ] Errors also included in state vector.
+
+cte  - Cross Track Error(error between the center of the road and the vehicle's position)
+
+eψ   - error in orientation(desired orientation subtracted from the current orientation)
+
+
+Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity)
+
+[δ,a] are the actuators/control inputs
+
+δ   -  steering angle [-1,1] normalized
+
+a   -  acceleration 
+
+
+
+
+
+
+# Setting up enviorenment for project
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 
