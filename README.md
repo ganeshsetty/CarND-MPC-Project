@@ -10,42 +10,37 @@ A simple vehicle model called global kinematic model is adopted for designing MP
 
 ### State
 
-[x,y,ψ,v] is the state of the vehicle
+[x,y,ψ,v] is the state of the vehicle 
 
-x,y - position of vehicle
-
-ψ   - orientation in radians
-
-v   - speed of vehicle
+* x,y - position of vehicle
+* ψ   - orientation in radians
+* v   - speed of vehicle
 
 [cte,eψ] Errors also included in state vector.
 
-cte  - Cross Track Error(error between the center of the road and the vehicle's position)
-
-eψ   - error in orientation(desired orientation subtracted from the current orientation)
+* cte  - Cross Track Error(error between the center of the road and the vehicle's position)
+* eψ   - error in orientation(desired orientation subtracted from the current orientation)
 
 
 ### Actuators
 
-
 [δ,a] are the actuators/control inputs
 
-δ   -  steering angle [-1,1] normalized
-
-a   -  acceleration[+1,-1] corresponding to throttle, -ve value means braking, where +1 is full acceleration and -1 is full brake.
+* δ   -  steering angle [-1,1] normalized
+* a   -  acceleration[+1,-1] corresponding to throttle, -ve value means braking, where +1 is full acceleration and -1 is full brake.
 
 
 ### Update equations
 
-x(t+1) = x(t) + v(t) * cos(ψ(t)) * dt
+* x(t+1) = x(t) + v(t) * cos(ψ(t)) * dt
+* y(t+1) = y(t) + v(t) * sin(ψ(t)) * dt
+* ψ(t+1) = ψ(t) + v(t)/Lf * δ ∗ dt
+* v(t+1) = v(t) + a * dt
 
-y(t+1) = y(t) + v(t) * sin(ψ(t)) * dt
+where Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity))
 
-ψ(t+1) = ψ(t) + v(t)/Lf * δ ∗ dt
+# Timestep Length and Elapsed Duration (N & dt)
 
-v(t+1) = v(t) + a * dt
-
-Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity))
 
 
 
