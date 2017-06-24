@@ -8,6 +8,8 @@ The video link shows the car behaviour with MPC implementation https://youtu.be/
 
 A simple vehicle model called global kinematic model is adopted for designing MPC.This model is simplification of dynamic model by ignoring gravity, tire forces etc.
 
+### State
+
 [x,y,ψ,v] is the state of the vehicle
 
 x,y - position of vehicle
@@ -23,15 +25,23 @@ cte  - Cross Track Error(error between the center of the road and the vehicle's 
 eψ   - error in orientation(desired orientation subtracted from the current orientation)
 
 
-Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity)
+### Actuators
+
 
 [δ,a] are the actuators/control inputs
 
 δ   -  steering angle [-1,1] normalized
 
-a   -  acceleration 
+a   -  acceleration[+1,-1] corresponding to throttle, -ve value means braking, where +1 is full acceleration and -1 is full brake.
 
 
+### Update equations
+
+x(t+1) = x(t) + v(t) * cos(ψ(t)) * dt
+
+
+
+Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity)
 
 
 
