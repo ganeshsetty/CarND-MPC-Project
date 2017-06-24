@@ -39,9 +39,13 @@ a   -  acceleration[+1,-1] corresponding to throttle, -ve value means braking, w
 
 x(t+1) = x(t) + v(t) * cos(ψ(t)) * dt
 
+y(t+1) = y(t) + v(t) * sin(ψ(t)) * dt
 
+ψ(t+1) = ψ(t) + v(t)/Lf * δ ∗ dt
 
-Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity)
+v(t+1) = v(t) + a * dt
+
+Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity))
 
 
 
