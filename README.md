@@ -40,6 +40,11 @@ A simple vehicle model called global kinematic model is adopted for designing MP
 where Lf  - physical characteristic of the vehicle( distance between front of vehicle and CoG(Center of Gravity))
 
 # Timestep Length and Elapsed Duration (N & dt)
+T  is prediction horizon and is product of N(time steps) and dt(elapses between actuations).N, dt, and T are hyperparameters are tuned while building model predictive controller. Initially i started with N = 10 and dt = 0.05, but the actuation commands have latency of 0.1s resulted in car driving off the road within few timesteps. Then played around by tuning dt by increasing it to 0.15 i.e prediction horizon increased, resulted in better behaviour atleast could run laps by incorporating  penalty weights for cte and steer angles for higher speeds (100mph) but observed max speed achieved is approx 65mph and drastically speed reduced during turns. But to improve the performance the latency handling part is implemented where the predicted state (ie after latency 0.1sec)is fed for mpc solve function.
+Finally best performace is obtained with N = 10 and dt = 0.1sec at reference velocity of 100mph. Achieved a max speed of 90 mph.
+
+
+
 
 
 
