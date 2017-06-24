@@ -44,6 +44,15 @@ T  is prediction horizon and is product of N(time steps) and dt(elapses between 
 Finally best performace is obtained with N = 10 and dt = 0.1sec at reference velocity of 100mph. Achieved a max speed of 90 mph.
 Also while tuning the prediction horizon T it is kept as 1 to 1.5 seconds since more than this duration the environment will change enough that it won't make sense to predict any further into the future.
 
+# Cost function and penalties
+
+Cost should be function of how far the error is from 0 in case of cross track error and orientation error.
+Additional cost considerations are velocity error,control inputs, value gap between sequential actuations
+
+        cost = cte^2 + eψ^2 + (v-ref_v)^2 + δ^2 + a^2 + (δ(t+1) - δ(t))^2 + (a(t+1) -a(t))^2
+
+All cost terms in the above equation can be penalized with weighing factors. For example, to reduce cte error and orientation error, i have choosen a high value of 4000,2000 penalty factors respectively and it helped at high speed during turns, the cte considerably reduced with compromise in speed (during turns average of 50mph it could achieve) but keeping car well around center of track. To improve smooth steering during turns a weighing factor of 500 used for reducing steering values gap of sequential actuations.
+
 
 # Polynomial Fitting and MPC Preprocessing
 
@@ -55,7 +64,15 @@ In a real car, an actuation command won't execute instantly - there will be a de
 
         this_thread::sleep_for(chrono::milliseconds(100));
         
-But this latency has to be taken care before we feed state vector to MPC solver, i.e state should reflect the values predicted after 100ms. In the code, it is handled by update equations. Then as usual the waypoints are converted to this car coordinate system as explained above.
+But this latency has to be taken care before we feed state vector to MPC solver, i.e state should reflect the values predicted after 100ms. In the code, it is handled by update equations. 
+
+          //predict state in 100ms latency
+          px = px + v*cos(psi)*latency;
+          py = py + v*sin(psi)*latency;
+          psi = psi + v*(-delta)/Lf*latency; //steering(delta) is -ve of value received  from simulator
+          v = v + acceleration*latency;
+
+Then as usual the waypoints are converted to this car coordinate system as explained above.
 
 After handling the latency , the MPC tunes very well the actuators (steering angle and throttle) that chooses optimal MPC tracjectory by minimizing the cost function within the actuators constraints.
 
