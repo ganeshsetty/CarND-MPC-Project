@@ -74,7 +74,7 @@ But this latency has to be taken care before we feed state vector to MPC solver,
 
 Then as usual the waypoints are converted to this car coordinate system as explained above.
 
-After handling the latency , the MPC tunes very well the actuators (steering angle and throttle) that chooses optimal MPC tracjectory by minimizing the cost function within the actuators constraints.
+After handling the latency , the MPC tunes very well the actuators (steering angle and throttle) that chooses optimal MPC trajectory by minimizing the cost function within the actuators constraints.
 
 
 
