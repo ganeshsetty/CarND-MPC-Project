@@ -42,9 +42,22 @@ where Lf  - physical characteristic of the vehicle( distance between front of ve
 # Timestep Length and Elapsed Duration (N & dt)
 T  is prediction horizon and is product of N(time steps) and dt(elapses between actuations).N, dt, and T are hyperparameters are tuned while building model predictive controller. Initially i started with N = 10 and dt = 0.05, but the actuation commands have latency of 0.1s resulted in car driving off the road within few timesteps. Then played around by tuning dt by increasing it to 0.15 i.e prediction horizon increased, resulted in better behaviour atleast could run laps by incorporating  penalty weights for cte and steer angles for higher speeds (100mph) but observed max speed achieved is approx 65mph and drastically speed reduced during turns. But to improve the performance the latency handling part is implemented where the predicted state (ie after latency 0.1sec)is fed for mpc solve function.
 Finally best performace is obtained with N = 10 and dt = 0.1sec at reference velocity of 100mph. Achieved a max speed of 90 mph.
+Also while tuning the prediction horizon T it is kept as 1 to 1.5 seconds since more than this duration the environment will change enough that it won't make sense to predict any further into the future.
 
 
+# Polynomial Fitting and MPC Preprocessing
 
+The simulator sends to MPC solver , six waypoints(ptsx & ptsy) , the vehicle x,y position(px,py), orientation and speed (mph). Before fed to MPC solver,waypoints are preprocessed by converting them to car coordinate system and transformed ones are polyfitted well with 3rd order polynomial equation. The initial state vector fed to solver i.e, position and orientation as zeros since coordinate system is wrt car. The cross track error is determined with polyeval function at x =0 i.e constant term of fitted polynomial and orientation error is first derivative of polynomial at x =0. The resultant state vector [0,0,0,v,cte,eψ] are fed to mpc solver which tunes the actuators for optimal trajectory.
+
+# Model Predictive Control with Latency
+
+In a real car, an actuation command won't execute instantly - there will be a delay as the command propagates through the system. In main.cpp, before sending the actuators commands to simulator a latency of 100ms is introduced as below
+
+        this_thread::sleep_for(chrono::milliseconds(100));
+        
+But this latency has to be taken care before we feed state vector to MPC solver, i.e state should reflect the values predicted after 100ms. In the code, it is handled by update equations. Then as usual the waypoints are converted to this car coordinate system as explained above.
+
+After handling the latency , the MPC tunes very well the actuators (steering angle and throttle) that chooses optimal MPC tracjectory by minimizing the cost function within the actuators constraints.
 
 
 
